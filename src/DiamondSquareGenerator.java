@@ -14,7 +14,7 @@ public class DiamondSquareGenerator {
         BufferedImage img = dfMap.getCompatibleImage();
 
         Point3D[] points3D = new Point3D[map.length*map[0].length];
-        Tools.mapToRGB(map, img);
+        Tools.mapToRGB(map, img, Tools.loadColorRamp("colorRamp.png"));
         Tools.mapToPointCloud(map, points3D, img, maxZ);
 
         dfMap.show(img);
@@ -59,7 +59,7 @@ public class DiamondSquareGenerator {
 
         for (y = 0; y <= max; y += half)
             for (x = (y + half) % size; x <= max; x += size) {
-                diamond(x, y, half, (float) rnd.nextFloat() * scale * 2 - scale);
+                diamond(x, y, half,  rnd.nextFloat() * scale * 2 - scale);
             }
         divide(size/2, roughness);
     }

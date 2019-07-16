@@ -1,5 +1,7 @@
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.io.File;
 import java.util.Random;
 
 public class Tools
@@ -7,14 +9,23 @@ public class Tools
     public static void mapToRGB(float[][] map, BufferedImage img) {
         for(int x = 0; x<map.length; x++)
             for(int y = 0; y<map[0].length; y++){ 
-                int val = (int) (map[x][y]*255);
-                if (val < 0) 
-                    val = 0;
-                val = Math.min(val,255);
+                int val = floatToBW(map[x][y]);
                 img.setRGB(x,y,new Color(val,val,val).getRGB());
             }
     }
-    
+
+    private static int floatToBW(float f) {
+        return (f < 0f)?0:Math.min((int) (f*255f), 255);
+    }
+
+    public static void mapToRGB(float[][] map, BufferedImage img, BufferedImage colorRamp) {
+        for(int x = 0; x<map.length; x++)
+            for(int y = 0; y<map[0].length; y++){
+                int val = floatToBW(map[x][y]);
+                img.setRGB(x,y,new Color(colorRamp.getRGB(0,255-val)).getRGB());
+            }
+    }
+
     public static void mapToPointCloud(float[][] map, Point3D[] points3D, BufferedImage img,  int maxZ) {
         int width = map.length;
         int height = map[0].length;
@@ -65,4 +76,18 @@ public class Tools
             }
         return newMap;
     }
+
+    public static float perlin(float x, float y) {
+        return 1f; //yay
+    }
+
+    public static BufferedImage loadColorRamp(String path) {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BufferedImage(10, 255, BufferedImage.TYPE_INT_RGB);
+        }
+    }
+
 }
