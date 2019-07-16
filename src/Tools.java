@@ -10,6 +10,7 @@ public class Tools
                 int val = (int) (map[x][y]*255);
                 if (val < 0) 
                     val = 0;
+                val = Math.min(val,255);
                 img.setRGB(x,y,new Color(val,val,val).getRGB());
             }
     }
